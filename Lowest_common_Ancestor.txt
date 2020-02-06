@@ -1,0 +1,112 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+void dfs(vector<vector<int>>, int[], int**,int,int);
+void setparent(vector<vector<int>>, int[], int**, int,int);
+int find_common(int**, int*, int, int,int);
+
+int main(void)
+{
+	int n = 21;
+	int log = 4;
+	vector<vector<int>> v(n);
+	int* c = new int[n];
+	int** parent = new int* [n];
+	for (int i = 0; i < n; i++)
+	{
+		parent[i] = new int[log] {0, };
+	}
+	fill(c, c + n, -1);
+	v[0].push_back(1);
+	v[0].push_back(2);
+
+	v[1].push_back(3);
+	v[1].push_back(4);
+
+	v[2].push_back(5);
+	v[2].push_back(6);
+
+	v[3].push_back(7);
+	v[3].push_back(8);
+
+	v[4].push_back(9);
+	v[4].push_back(10);
+	v[4].push_back(11);
+
+	v[8].push_back(12);
+	v[8].push_back(13);
+
+	v[9].push_back(14);
+
+	v[10].push_back(15);
+
+	v[13].push_back(16);
+	v[13].push_back(17);
+
+	v[14].push_back(18);
+	v[15].push_back(19);
+
+	v[17].push_back(20);
+	setparent(v, c, parent, log,n);
+	cout << find_common(parent, c, 3, 17, log);
+	for (int i = 0; i < n; i++)
+	{
+		delete[] parent[i];
+	}
+	delete[] c;
+	delete[] parent;
+	return 0;
+}
+
+void dfs(vector<vector<int>> v, int c[],int** parent,int x,int depth)
+{
+	if (c[x]==-1)
+	{
+		c[x] = depth;
+		for (unsigned int i = 0; i < v[x].size(); i++)
+		{
+			int y = v[x][i];
+			if (c[y] != -1) continue;
+			parent[y][0] = x;
+			dfs(v, c, parent,y, depth + 1);
+		}
+	}
+}
+
+void setparent(vector<vector<int>> v, int c[], int** parent,int log,int node_len)
+{
+	dfs(v, c, parent, 0, 0);
+	for (int j = 1; j < log; j++)
+	{
+		for (int i = 0; i < node_len; i++)
+		{
+			parent[i][j] = parent[parent[i][j - 1]][j - 1];
+		}
+	}
+}
+
+int find_common(int** parent, int* c, int x, int y,int log)
+{
+	if (c[x] < c[y])
+		swap(x, y);
+	for (int i = log - 1; i >= 0; i--)
+	{
+		if (c[x] - c[y] >= (1 << i))
+		{
+			x = parent[x][i];
+		}
+	}
+	if (x == y) return x;
+	for (int i = log - 1; i >= 0; i--)
+	{
+		if (parent[x][i] != parent[y][i])
+		{
+			x = parent[x][i];
+			y = parent[y][i];
+			break;
+		}
+	}
+	return parent[x][0];
+}
