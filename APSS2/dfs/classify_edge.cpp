@@ -13,7 +13,7 @@ int counter; //지금까지 발견한 정점의 수
 
 void initialize(const int vertexCount){
     edge=vector<vector<char>>(vertexCount,vector<char>(vertexCount,NULL));
-    discoverd=vector<int>(vertexCount,-1);
+    discovered=vector<int>(vertexCount,-1);
     finished=vector<bool>(vertexCount,false);
     counter=0;
 }
@@ -22,7 +22,7 @@ void dfs2(int i){
     discovered[i]=counter++;
     for(int j=0;j<adj[i].size();j++){
         int next=adj[i][j];
-        if(discoverd[next]==-1){
+        if(discovered[next]==-1){
             edge[i][next]='t';
             dfs2(next);
             continue;
