@@ -79,7 +79,7 @@ vector<int> multiply(const vector<int>& a, const vector<int>& b){
 vector<int> karatsuba(const vector<int>& a, const vector<int>& b){
     if(a.size()<b.size()) return karatsuba(b,a);
     if(a.size()==0 || b.size()==0) return vector<int>();
-    if(a.size()=<100) return multiply(a,b);
+    if(a.size()<=100) return multiply(a,b);
 
     int half=a.size()/2;
     vector<int> a1(a.begin()+half, a.end());
