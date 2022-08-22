@@ -30,6 +30,7 @@ std::pair<int,std::pair<int,int>> getEEV(int a, int b){
     return std::make_pair(rCur,std::make_pair(xCur,yCur));
 }
 
+
 //위의 소스를 이용한 모듈러 연산에서 곱셈의 역원 구하기
 //모듈러 연산에서 m에대한 a의 곱셈의 역원 a^-1 구하기
 //(a*a^-1)MODm=1, a*a^-1=my+1, ax-my=1 (x=a^-1)
