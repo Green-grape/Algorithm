@@ -20,7 +20,9 @@ int main(){
             boards.push_back(board);
         }
         results.push_back(getBiggestSquare(0,boards.size()-1));
+        cout << 1 <<"\n";
         results.push_back(getBiggestSquare2());
+        cout << 2 <<"\n";
         //reinitialize
         boards.resize(0);
     }
@@ -58,23 +60,20 @@ int getBiggestSquare(int left, int right){
     return max(sideBiggestArea, currentArea);
 }
 
-//
 int getBiggestSquare2(){
-    stack<int> remainBoards;
-    boards.push_back(0);//for문이 한번더 시행되기 위함
+    stack<int> s;
+    boards.push_back(0); //다른 모든 판자의 right[]를 정의해줌(right[i]: i번째 판자를 포함하는 사각형중 최대면적을 가지는 사각형을 오른쪽에서 막는 판자)
     int ret=0;
     for(int i=0;i<boards.size();i++){
-        while(!remainBoards.empty() && boards[remainBoards.top()]>=boards[i]){
-            //int j=remainBoards.top();
-            //right[j]=i;
-            int currentHeight=boards[remainBoards.top()];
-            remainBoards.pop();
-            int width; //width=right[j]-left[j]-1
-            if(remainBoards.empty()) width=i; //left[j]=-1
-            else width=(i-1)-remainBoards.top(); //left[j]=remainBoards.top()
-            ret=max(ret, width*currentHeight);
+        while(!s.empty() && boards[s.top()]>=boards[i]){
+            int j=s.top();
+            s.pop();
+            int width=-1;
+            if(s.empty()) width=i;
+            else width=i-1-s.top();
+            ret=max(ret, boards[j]*width);
         }
-        remainBoards.push(i);
+        s.push(i);
     }
     return ret;
 }

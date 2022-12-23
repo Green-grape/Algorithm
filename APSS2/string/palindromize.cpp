@@ -1,18 +1,19 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <algorithm>
 //palindrome:앞, 뒤로 읽었을 때 똑같은 문자열
 //문자열이 주어졌을때 가장 짧은 문자열을 붙여서 palindrome을 만들때 이 최소길이는?
 
 using namespace std;
 
-int getSmalleatPalindromeLength(const string&);
+string getSmalleatPalindrome(const string&);
 
 int main(){
     string str;
     cin >> str;
-    int length=getSmalleatPalindromeLength(str);
-    cout << length << "\n";
+    string palindrome=getSmalleatPalindrome(str);
+    cout << palindrome << "\n";
     return 0;
 }
 
@@ -43,24 +44,71 @@ vector<int> getParialMatch(const string& str){
     return p;
 }
 
-int getSmalleatPalindromeLength(const string& str){
+string getSmalleatPalindrome(const string& str){
     string reverseStr=getReverseString(str);
-    int begin=0, matched=0, maxMatched=0;
-    vector<int> partialMatch=getParialMatch(reverseStr);
+    vector<int> p=getParialMatch(reverseStr);
+    int begin=0, matched=0;
+    int maxMatched=0;
     while(begin+matched<str.length()){
         if(str[begin+matched]==reverseStr[matched]){
             matched++;
             maxMatched=max(maxMatched,matched);
-        }
-        else{
+        }else{
             if(matched==0) begin++;
             else{
-                begin+=matched-partialMatch[matched-1];
-                matched=partialMatch[matched-1];
+                begin+=matched-p[matched-1];
+                matched=p[matched-1];
             }
         }
     }
-    return 2*str.length()-maxMatched;
+    return str+reverseStr.substr(matched);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// int getSmalleatPalindromeLength(const string& str){
+//     string reverseStr=getReverseString(str);
+//     int begin=0, matched=0, maxMatched=0;
+//     vector<int> partialMatch=getParialMatch(reverseStr);
+//     while(begin+matched<str.length()){
+//         if(str[begin+matched]==reverseStr[matched]){
+//             matched++;
+//             maxMatched=max(maxMatched,matched);
+//         }
+//         else{
+//             if(matched==0) begin++;
+//             else{
+//                 begin+=matched-partialMatch[matched-1];
+//                 matched=partialMatch[matched-1];
+//             }
+//         }
+//     }
+//     return 2*str.length()-maxMatched;
+// }
 
 
